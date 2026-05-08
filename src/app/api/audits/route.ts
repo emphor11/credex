@@ -4,6 +4,7 @@ import type { PublicAuditRecord } from "@/lib/audit/public-record";
 import { auditRequestSchema } from "@/lib/audit/schema";
 import { createAuditSlug } from "@/lib/server/slugs";
 import { saveAuditRecord, storageMode } from "@/lib/server/storage";
+import { generatePersonalizedSummary } from "@/lib/server/summary";
 
 export async function POST(request: Request) {
   const parsed = auditRequestSchema.safeParse(await request.json());
@@ -15,7 +16,16 @@ export async function POST(request: Request) {
     );
   }
 
-  const result = auditSpend(parsed.data);
+  const baseResult = auditSpend(parsed.data);
+  const summary = await generatePersonalizedSummary({
+    request: parsed.data,
+    audit: baseResult
+  });
+  const result = {
+    ...baseResult,
+    summary: summary.summary,
+    summarySource: summary.source
+  };
   const record: PublicAuditRecord = {
     slug: createAuditSlug(),
     request: parsed.data,
@@ -37,7 +47,8 @@ export async function POST(request: Request) {
       slug: record.slug,
       publicUrl: new URL(`/audits/${record.slug}`, getAppOrigin(request)).toString(),
       audit: result,
-      storage: storageMode()
+      storage: storageMode(),
+      summaryWarning: summary.warning
     },
     { status: 201 }
   );

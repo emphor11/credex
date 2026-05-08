@@ -16,10 +16,10 @@
 
 **Hours worked:** 3
 
-**What I did:** Added validated API routes for creating public audits, reading public audits by slug, and capturing leads after the result is shown. Added a Supabase-ready storage layer with local in-memory fallback, a Supabase schema, honeypot + basic rate limiting for lead capture, real share-link creation from the UI, Resend confirmation email wiring, and API tests covering audit creation, invalid plans, public payload privacy, invalid emails, and high-savings lead capture.
+**What I did:** Added validated API routes for creating public audits, reading public audits by slug, and capturing leads after the result is shown. Added a Supabase-ready storage layer with local in-memory fallback, a Supabase schema, honeypot + basic rate limiting for lead capture, real share-link creation from the UI, Resend confirmation email wiring, Groq-powered personalized summaries with fallback, and API tests covering audit creation, invalid plans, public payload privacy, invalid emails, high-savings lead capture, and LLM fallback behavior.
 
 **What I learned:** The public audit and private lead flows need to be separate at the data-model level, not just hidden in the UI. That makes it much harder to accidentally leak email or company fields in a shared report.
 
-**Blockers / what I'm stuck on:** Supabase and Resend are configured locally, but Resend test mode only sends to the account email until a sending domain is verified. User interviews have not happened yet and need to start today.
+**Blockers / what I'm stuck on:** Supabase, Resend, and Groq are configured locally, but Resend test mode only sends to the account email until a sending domain is verified. User interviews have not happened yet and need to start today.
 
-**Plan for tomorrow:** Add the real LLM summary provider call with fallback, polish the public report page, and continue interview outreach.
+**Plan for tomorrow:** Polish the public report page, prepare deployment, and continue interview outreach.

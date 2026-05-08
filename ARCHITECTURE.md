@@ -12,11 +12,11 @@ flowchart TD
   Lead --> LeadAPI["POST /api/leads"]
   LeadAPI --> Supabase["Supabase private lead storage"]
   LeadAPI --> Resend["Resend confirmation email"]
-  Lead --> Email["Resend confirmation email"]
   Results --> PublicAudit["Sanitized public audit URL"]
   PublicAudit --> OG["Dynamic OG and Twitter metadata"]
   Engine --> Summary["LLM summary endpoint"]
-  Summary --> Fallback["Templated fallback on API failure"]
+  Summary --> Groq["Groq Chat Completions"]
+  Groq --> Fallback["Templated fallback on API failure"]
 ```
 
 ## Data Flow
@@ -29,9 +29,11 @@ Public audit creation validates the form payload, runs the deterministic audit e
 
 Next.js React with TypeScript is the app layer. It keeps the product in React while supporting API routes, server-rendered public pages, and dynamic metadata for share previews. Tailwind is used for fast custom UI without an admin template.
 
-Supabase is the production backend, Resend is the email provider, Anthropic is the preferred LLM provider, and Vercel is the deployment target. Local development currently falls back to in-memory storage when Supabase env vars are absent; this keeps demos working, but it is not production storage.
+Supabase is the production backend, Resend is the email provider, Groq is the LLM provider, and Vercel is the deployment target. Local development currently falls back to in-memory storage when Supabase env vars are absent; this keeps demos working, but it is not production storage.
 
 Lead capture stores the lead first, then attempts the Resend confirmation email. Email failure does not roll back the saved lead; the API returns a warning so the UI can be honest without losing the conversion.
+
+Audit creation runs the deterministic audit engine first, then asks Groq to rewrite the result into a short personalized summary. If Groq is unavailable, rate-limited, or returns an empty response, the API stores the deterministic template summary and marks `summarySource: "template"`.
 
 ## Abuse Protection
 

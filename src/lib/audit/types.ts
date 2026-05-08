@@ -72,4 +72,5 @@ export type AuditResult = {
   totals: AuditTotals;
   results: ToolAuditResult[];
   summary: string;
+  summarySource?: "llm" | "template";
 };

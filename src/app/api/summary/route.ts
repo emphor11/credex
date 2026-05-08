@@ -1,21 +1,23 @@
 import { NextResponse } from "next/server";
 import { auditSpend } from "@/lib/audit/engine";
-import type { AuditRequest } from "@/lib/audit/types";
+import { auditRequestSchema } from "@/lib/audit/schema";
+import { generatePersonalizedSummary } from "@/lib/server/summary";
 
 export async function POST(request: Request) {
-  const payload = (await request.json()) as AuditRequest;
-  const audit = auditSpend(payload);
+  const parsed = auditRequestSchema.safeParse(await request.json());
 
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return NextResponse.json({
-      summary: audit.summary,
-      source: "template"
-    });
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: "Invalid audit payload.", issues: parsed.error.flatten() },
+      { status: 400 }
+    );
   }
 
-  return NextResponse.json({
-    summary: audit.summary,
-    source: "template",
-    note: "LLM call will be wired after prompt evaluation and API key setup."
+  const audit = auditSpend(parsed.data);
+  const summary = await generatePersonalizedSummary({
+    request: parsed.data,
+    audit
   });
+
+  return NextResponse.json(summary);
 }

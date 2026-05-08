@@ -2,24 +2,36 @@
 
 ## Personalized Audit Summary
 
-The LLM summary endpoint will use this prompt once the API key is configured:
+The LLM summary endpoint uses Groq Chat Completions with this prompt shape:
 
 ```text
-You are writing a concise finance-aware AI spend audit summary for a startup founder or engineering manager.
+System:
+You write concise, finance-aware AI spend audit summaries. Use only the provided numbers and recommendations. Do not invent savings or vendors.
 
-Inputs:
-- Team size: {{teamSize}}
-- Primary AI use case: {{primaryUseCase}}
-- Current monthly AI spend: {{currentMonthlySpend}}
-- Potential monthly savings: {{potentialMonthlySavings}}
-- Recommendations: {{recommendations}}
+User:
+Write one paragraph of about 100 words for a startup founder or engineering manager.
 
-Write one paragraph of about 100 words. Be specific, calm, and honest. Do not invent savings beyond the provided recommendations. If savings are under $100/month, say the stack is already efficient and suggest monitoring pricing changes. If savings are over $500/month, mention that discounted AI infrastructure credits may be worth exploring. Avoid hype and avoid legal or financial advice disclaimers.
+Team size: {{teamSize}}
+Primary use case: {{primaryUseCase}}
+Current monthly AI spend: {{currentMonthlySpend}}
+Potential monthly savings: {{potentialMonthlySavings}}
+Potential annual savings: {{potentialAnnualSavings}}
+Credex eligible: {{yes_or_no}}
+
+Recommendations:
+{{recommendations}}
+
+Rules:
+- Be specific, calm, and honest.
+- Do not invent savings beyond the provided recommendations.
+- If savings are under $100/month, say the stack is already efficient and suggest monitoring pricing changes.
+- If savings are over $500/month, mention discounted AI infrastructure credits may be worth exploring.
+- Return only the paragraph.
 ```
 
 ## Why This Prompt
 
-The audit math is rule-based and deterministic. The LLM is only used to turn the result into a readable summary. The prompt tells the model not to invent savings because hallucinated finance recommendations would damage trust.
+The audit math is rule-based and deterministic. Groq is only used to turn the result into a readable summary. The prompt tells the model not to invent savings because hallucinated finance recommendations would damage trust.
 
 ## Tried But Rejected
 

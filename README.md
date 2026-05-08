@@ -26,7 +26,9 @@ Target deploy is Vercel with these environment variables:
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY`
 - `RESEND_API_KEY`
-- `ANTHROPIC_API_KEY`
+- `RESEND_FROM_EMAIL`
+- `GROQ_API_KEY`
+- `GROQ_MODEL`
 
 Create the Supabase tables with `supabase/schema.sql` before enabling production storage. Without Supabase env vars, the app falls back to in-memory storage for local development only.
 

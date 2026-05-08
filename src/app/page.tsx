@@ -97,6 +97,7 @@ export default function HomePage() {
       slug?: string;
       publicUrl?: string;
       error?: string;
+      summaryWarning?: string;
     };
 
     if (!response.ok || !payload.slug || !payload.publicUrl) {
@@ -105,6 +106,10 @@ export default function HomePage() {
 
     setAuditSlug(payload.slug);
     setPublicUrl(payload.publicUrl);
+
+    if (payload.summaryWarning) {
+      setStatus(`Created report with template summary: ${payload.summaryWarning}`);
+    }
 
     return { slug: payload.slug, url: payload.publicUrl };
   }
