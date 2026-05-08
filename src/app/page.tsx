@@ -142,17 +142,27 @@ export default function HomePage() {
           website
         })
       });
-      const payload = (await response.json()) as { error?: string; highSavings?: boolean };
+      const payload = (await response.json()) as {
+        error?: string;
+        highSavings?: boolean;
+        email?: { sent: boolean; warning?: string };
+      };
 
       if (!response.ok) {
         throw new Error(payload.error || "Could not capture report.");
       }
 
-      setStatus(
-        payload.highSavings
-          ? "Saved. This looks like a high-savings case for Credex follow-up."
-          : "Saved. You can use the public link anytime."
-      );
+      if (payload.email?.sent) {
+        setStatus(
+          payload.highSavings
+            ? "Saved and emailed. This looks like a high-savings case for Credex follow-up."
+            : "Saved and emailed. You can use the public link anytime."
+        );
+      } else {
+        setStatus(
+          `Saved, but email was not sent${payload.email?.warning ? `: ${payload.email.warning}` : "."}`
+        );
+      }
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Could not capture report.");
     } finally {

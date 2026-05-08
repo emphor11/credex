@@ -19,9 +19,10 @@ npm test
 - `src/app/api/audits/route.test.ts` - serves saved public audits without private lead details.
 - `src/app/api/audits/route.test.ts` - rejects invalid lead email addresses.
 - `src/app/api/audits/route.test.ts` - captures valid leads and marks high-savings audits.
+- `src/app/api/audits/route.test.ts` - lead capture returns a clear Resend warning when email is not configured.
 
 ## Planned Tests
 
 - Form state survives reload.
 - LLM summary endpoint falls back when the provider is unavailable.
-- Resend confirmation email is triggered after lead capture.
+- Mocked Resend success and failure behavior.

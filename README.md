@@ -30,6 +30,8 @@ Target deploy is Vercel with these environment variables:
 
 Create the Supabase tables with `supabase/schema.sql` before enabling production storage. Without Supabase env vars, the app falls back to in-memory storage for local development only.
 
+For Resend, local testing can use `SpendTrim AI <onboarding@resend.dev>`, but Resend only sends to the account email until a sending domain is verified. Production needs `RESEND_FROM_EMAIL` set to an address on a verified domain.
+
 ## Decisions
 
 1. I chose Next.js React instead of a Vite SPA because shareable audit URLs need server-rendered Open Graph metadata.

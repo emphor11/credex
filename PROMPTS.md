@@ -24,3 +24,7 @@ The audit math is rule-based and deterministic. The LLM is only used to turn the
 ## Tried But Rejected
 
 No alternatives tested yet. Day 2 will compare this against a shorter prompt and a bullet-summary version.
+
+## Email Copy
+
+Transactional confirmation emails are deterministic, not LLM-written. They include monthly savings, annual savings, the templated audit summary, a public report link, and a Credex note only when savings exceed $500/month.

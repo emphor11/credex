@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { leadCaptureSchema } from "@/lib/audit/schema";
+import { sendAuditConfirmationEmail } from "@/lib/server/email";
 import { checkRateLimit } from "@/lib/server/rate-limit";
 import { getAuditRecord, saveLeadRecord } from "@/lib/server/storage";
 
@@ -46,9 +47,16 @@ export async function POST(request: Request) {
     );
   }
 
+  const email = await sendAuditConfirmationEmail({
+    audit,
+    email: parsed.data.email,
+    companyName: parsed.data.companyName || undefined
+  });
+
   return NextResponse.json({
     ok: true,
-    highSavings: audit.result.totals.credexEligible
+    highSavings: audit.result.totals.credexEligible,
+    email
   });
 }
 

@@ -10,6 +10,7 @@ describe("audit API", () => {
   beforeEach(() => {
     clearMemoryStorageForTests();
     clearRateLimitForTests();
+    delete process.env.RESEND_API_KEY;
   });
 
   it("creates a public audit and returns a share URL", async () => {
@@ -81,6 +82,8 @@ describe("audit API", () => {
     expect(leadResponse.status).toBe(200);
     expect(leadPayload.ok).toBe(true);
     expect(leadPayload.highSavings).toBe(true);
+    expect(leadPayload.email.sent).toBe(false);
+    expect(leadPayload.email.warning).toContain("Resend");
   });
 });
 
