@@ -28,6 +28,8 @@ Target deploy is Vercel with these environment variables:
 - `RESEND_API_KEY`
 - `ANTHROPIC_API_KEY`
 
+Create the Supabase tables with `supabase/schema.sql` before enabling production storage. Without Supabase env vars, the app falls back to in-memory storage for local development only.
+
 ## Decisions
 
 1. I chose Next.js React instead of a Vite SPA because shareable audit URLs need server-rendered Open Graph metadata.
@@ -35,3 +37,4 @@ Target deploy is Vercel with these environment variables:
 3. I chose Supabase for storage because it gives Postgres, row-level security, and simple server-side inserts without building auth.
 4. I chose Resend for transactional email because it is fast to wire, has a simple API, and fits this single-report confirmation use case.
 5. I chose v0 as the eighth supported tool because its public pricing is clear and it overlaps with startup AI build workflows.
+6. I added an in-memory storage fallback for local demos, but production must use Supabase because serverless memory is not durable.

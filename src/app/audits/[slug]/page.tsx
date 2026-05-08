@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { auditSpend } from "@/lib/audit/engine";
 import { SAMPLE_AUDIT } from "@/lib/audit/sample";
+import { getAuditRecord } from "@/lib/server/storage";
 
 type PublicAuditPageProps = {
   params: Promise<{ slug: string }>;
@@ -9,7 +10,8 @@ type PublicAuditPageProps = {
 
 export async function generateMetadata({ params }: PublicAuditPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const audit = slug === "sample" ? auditSpend(SAMPLE_AUDIT) : null;
+  const record = slug === "sample" ? null : await getAuditRecord(slug);
+  const audit = slug === "sample" ? auditSpend(SAMPLE_AUDIT) : record?.result;
 
   if (!audit) {
     return {};
@@ -36,12 +38,13 @@ export async function generateMetadata({ params }: PublicAuditPageProps): Promis
 
 export default async function PublicAuditPage({ params }: PublicAuditPageProps) {
   const { slug } = await params;
+  const record = slug === "sample" ? null : await getAuditRecord(slug);
 
-  if (slug !== "sample") {
+  if (slug !== "sample" && !record) {
     notFound();
   }
 
-  const audit = auditSpend(SAMPLE_AUDIT);
+  const audit = slug === "sample" ? auditSpend(SAMPLE_AUDIT) : record!.result;
 
   return (
     <main className="mx-auto min-h-screen max-w-4xl px-5 py-10">

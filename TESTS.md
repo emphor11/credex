@@ -14,10 +14,14 @@ npm test
 - `src/lib/audit/engine.test.ts` - surfaces Credex for high API-style retail spend.
 - `src/lib/audit/engine.test.ts` - avoids manufactured savings for efficient stacks.
 - `src/lib/audit/engine.test.ts` - annualizes savings across multiple tools.
+- `src/app/api/audits/route.test.ts` - creates public audits and returns share URLs.
+- `src/app/api/audits/route.test.ts` - rejects invalid tool-plan combinations.
+- `src/app/api/audits/route.test.ts` - serves saved public audits without private lead details.
+- `src/app/api/audits/route.test.ts` - rejects invalid lead email addresses.
+- `src/app/api/audits/route.test.ts` - captures valid leads and marks high-savings audits.
 
 ## Planned Tests
 
-- API route validation for audit creation and lead capture.
-- Public audit payload strips identifying fields.
 - Form state survives reload.
 - LLM summary endpoint falls back when the provider is unavailable.
+- Resend confirmation email is triggered after lead capture.
