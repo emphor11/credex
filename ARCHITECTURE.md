@@ -35,6 +35,8 @@ Lead capture stores the lead first, then attempts the Resend confirmation email.
 
 Audit creation runs the deterministic audit engine first, then asks Groq to rewrite the result into a short personalized summary. If Groq is unavailable, rate-limited, or returns an empty response, the API stores the deterministic template summary and marks `summarySource: "template"`.
 
+The result experience has two explicit branches: audits above $500/month show a Credex consultation opportunity, while audits under $100/month use an honest "spending well" path and invite users to get notified when pricing or usage changes.
+
 ## Abuse Protection
 
 Day 2 uses a honeypot field plus simple IP-based server-side rate limiting on lead capture. This is lightweight enough for an MVP and catches low-effort spam without blocking legitimate founders behind hCaptcha friction. If abuse appears after launch, the next step is Cloudflare Turnstile or hCaptcha.

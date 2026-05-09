@@ -42,3 +42,4 @@ For Resend, local testing can use `SpendTrim AI <onboarding@resend.dev>`, but Re
 4. I chose Resend for transactional email because it is fast to wire, has a simple API, and fits this single-report confirmation use case.
 5. I chose v0 as the eighth supported tool because its public pricing is clear and it overlaps with startup AI build workflows.
 6. I added an in-memory storage fallback for local demos, but production must use Supabase because serverless memory is not durable.
+7. I made the public report page direct and numbers-first because it is the asset people will screenshot or share.

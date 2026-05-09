@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart3, Mail, RotateCcw, Share2, Sparkles } from "lucide-react";
+import { BarChart3, CheckCircle2, Mail, RotateCcw, Share2, ShieldCheck, Sparkles } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { auditSpend } from "@/lib/audit/engine";
 import { PRICING } from "@/lib/audit/pricing";
@@ -44,6 +44,8 @@ export default function HomePage() {
   }, [draft]);
 
   const audit = useMemo(() => auditSpend(draft), [draft]);
+  const isHighSavings = audit.totals.credexEligible;
+  const isEfficient = audit.totals.potentialMonthlySavings < 100;
 
   useEffect(() => {
     setAuditSlug("");
@@ -322,7 +324,9 @@ export default function HomePage() {
         <aside className="h-fit rounded-md bg-ink p-5 text-white shadow-soft-panel">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-sm text-white/70">Potential savings</p>
+              <p className="text-sm text-white/70">
+                {isEfficient ? "Current audit status" : "Potential savings"}
+              </p>
               <p className="mt-1 text-5xl font-semibold">
                 ${audit.totals.potentialMonthlySavings.toLocaleString()}
               </p>
@@ -330,12 +334,43 @@ export default function HomePage() {
                 ${audit.totals.potentialAnnualSavings.toLocaleString()} per year
               </p>
             </div>
-            <BarChart3 className="text-signal" size={42} />
+            {isEfficient ? (
+              <CheckCircle2 className="text-signal" size={42} />
+            ) : (
+              <BarChart3 className="text-signal" size={42} />
+            )}
           </div>
 
           <p className="mt-5 rounded-md bg-white/10 p-4 text-sm leading-6 text-white/85">
             {audit.summary}
           </p>
+
+          {isHighSavings ? (
+            <div className="mt-5 rounded-md border border-signal/40 bg-signal/15 p-4">
+              <div className="flex items-center gap-2 text-sm font-semibold text-signal">
+                <ShieldCheck size={18} />
+                Credex opportunity
+              </div>
+              <p className="mt-2 text-sm leading-6 text-white/85">
+                This audit clears the $500/month threshold. A Credex consultation should focus on
+                discounted AI infrastructure credits and billing corrections that preserve the
+                team&apos;s current workflow.
+              </p>
+            </div>
+          ) : null}
+
+          {isEfficient ? (
+            <div className="mt-5 rounded-md border border-white/15 bg-white/10 p-4">
+              <div className="flex items-center gap-2 text-sm font-semibold text-white">
+                <CheckCircle2 size={18} />
+                You&apos;re spending well
+              </div>
+              <p className="mt-2 text-sm leading-6 text-white/75">
+                No forced savings here. Capture the report and get notified when pricing changes
+                or new optimizations apply to this stack.
+              </p>
+            </div>
+          ) : null}
 
           <div className="mt-5 space-y-3">
             {audit.results.map((result, index) => (
@@ -345,10 +380,17 @@ export default function HomePage() {
                     <h2 className="text-base font-semibold">{result.toolLabel}</h2>
                     <p className="text-sm text-ink/60">{result.currentPlan}</p>
                   </div>
-                  <p className="text-right text-lg font-semibold text-moss">
+                  <p
+                    className={`text-right text-lg font-semibold ${
+                      result.monthlySavings > 0 ? "text-moss" : "text-ink/45"
+                    }`}
+                  >
                     ${result.monthlySavings.toLocaleString()}
                   </p>
                 </div>
+                <p className="mt-3 inline-flex rounded-full bg-ink/5 px-2.5 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-ink/60">
+                  {result.recommendationType.replaceAll("-", " ")}
+                </p>
                 <p className="mt-3 text-sm font-semibold">{result.recommendedAction}</p>
                 <p className="mt-1 text-sm leading-6 text-ink/70">{result.reason}</p>
               </article>
@@ -357,7 +399,7 @@ export default function HomePage() {
 
           <div className="mt-5 grid gap-3 rounded-md bg-white/10 p-4">
             <label className="grid gap-2 text-sm font-medium">
-              Capture this report
+              {isEfficient ? "Notify me when this stack changes" : "Capture this report"}
               <input
                 className="focus-ring rounded-md border border-white/20 bg-white px-3 py-2 text-ink"
                 placeholder="founder@company.com"
