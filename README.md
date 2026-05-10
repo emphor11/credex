@@ -4,9 +4,16 @@ SpendTrim AI is a free audit tool for startup founders and engineering managers 
 
 Deployed URL: pending Vercel deploy.
 
+## Current Submission Status
+
+- Local MVP is implemented and verified with tests, lint, and production build.
+- Production deployment is the next required step.
+- Real user interviews are still pending and must be added before final submission.
+- API keys used during local development should be rotated before final handoff because they were shared during setup.
+
 ## Screenshots
 
-Screenshots or a 30-second Loom/YouTube link will be added after the first deployed UI pass. Day 1 has the app skeleton and audit logic in place; visual capture comes after the results page is polished.
+Screenshots or a 30-second Loom/YouTube link will be added after the Vercel deployment is live and smoke-tested.
 
 ## Quick Start
 
@@ -33,6 +40,15 @@ Target deploy is Vercel with these environment variables:
 Create the Supabase tables with `supabase/schema.sql` before enabling production storage. Without Supabase env vars, the app falls back to in-memory storage for local development only.
 
 For Resend, local testing can use `SpendTrim AI <onboarding@resend.dev>`, but Resend only sends to the account email until a sending domain is verified. Production needs `RESEND_FROM_EMAIL` set to an address on a verified domain.
+
+Production smoke test checklist:
+
+1. Create an audit from the deployed homepage.
+2. Confirm the returned report URL opens at `/audits/[slug]`.
+3. Confirm the audit row is stored in Supabase.
+4. Submit the lead form with the Resend-allowed test email.
+5. Confirm the lead row is stored in Supabase and the email response is clear.
+6. Confirm the audit summary reports `summarySource: "llm"` when Groq is configured.
 
 ## Decisions
 

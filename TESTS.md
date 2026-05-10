@@ -6,6 +6,16 @@ Run all tests:
 npm test
 ```
 
+Last verified on 2026-05-10:
+
+```bash
+npm test
+npm run lint
+npm run build
+```
+
+Result: 14 automated tests passed, lint passed, and the Next.js production build completed successfully.
+
 ## Automated Tests
 
 - `src/lib/audit/engine.test.ts` - downgrades small teams from team plans.
@@ -18,8 +28,7 @@ npm test
 - `src/app/api/audits/route.test.ts` - rejects invalid tool-plan combinations.
 - `src/app/api/audits/route.test.ts` - serves saved public audits without private lead details.
 - `src/app/api/audits/route.test.ts` - rejects invalid lead email addresses.
-- `src/app/api/audits/route.test.ts` - captures valid leads and marks high-savings audits.
-- `src/app/api/audits/route.test.ts` - lead capture returns a clear Resend warning when email is not configured.
+- `src/app/api/audits/route.test.ts` - captures valid leads, marks high-savings audits, and returns a clear Resend warning when email is not configured.
 - `src/lib/server/summary.test.ts` - returns template summary when Groq is not configured.
 - `src/lib/server/summary.test.ts` - returns template summary when Groq fails.
 - `src/lib/server/summary.test.ts` - returns the Groq summary when the provider succeeds.

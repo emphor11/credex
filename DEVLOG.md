@@ -35,3 +35,15 @@
 **Blockers / what I'm stuck on:** The product still needs deployment, Lighthouse checks, screenshots/recording, and real user interviews. Resend still needs a verified sending domain before emailing arbitrary users.
 
 **Plan for tomorrow:** Deploy to Vercel, add deployed URL to README, capture screenshots or a short recording, and continue interview collection.
+
+## Day 4 - 2026-05-10
+
+**Hours worked:** 1.5
+
+**What I did:** Re-audited the current project state against the assignment requirements, repaired a corrupted local `node_modules` install, reinstalled dependencies from `package-lock.json`, verified the audit engine/API/summary tests, ran lint, ran a production Next.js build, and updated the submission docs with the current deployment and interview gaps.
+
+**What I learned:** The MVP is technically close, but the assignment risk has shifted from core implementation to proof: deployed URL, screenshots/recording, real interview notes, and enough distinct commit days. Keeping the docs honest is better than pretending local-only work is already production-ready.
+
+**Blockers / what I'm stuck on:** Vercel deployment still needs to be completed from the GitHub repo with production environment variables. User interviews are still missing and need real responses from founders, engineering managers, or startup operators.
+
+**Plan for tomorrow:** Complete Vercel deployment, smoke-test Supabase/Groq/Resend in production, add the live URL and screenshots to README, and add at least one real interview note.
